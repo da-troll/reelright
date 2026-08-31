@@ -35,7 +35,13 @@ Clone https://github.com/da-troll/reelright.git and set it up:
 git clone https://github.com/da-troll/reelright.git
 cd reelright
 npm install
-npm run dev
+npm ci --prefix input/vite-proof
+npm run proof:vite:verify
+
+That last command renders an actual demo video (out/vite-proof/dashboard-demo.mp4)
+of a real app's UI mounted inside Remotion and verified pixel-for-pixel
+deterministic - that's the actual point of this project, not the generic
+template `npm run dev` shows on its own.
 
 Then read CLAUDE.md and load the `integrate-native-app` skill
 (.agents/skills/integrate-native-app/SKILL.md) before doing anything else -
@@ -53,8 +59,22 @@ If you'd rather run it yourself:
 git clone https://github.com/da-troll/reelright.git
 cd reelright
 npm install
-npm run dev          # opens Remotion Studio with the fallback composition
 ```
+
+`npm run dev` opens Remotion Studio, but on its own it only shows Remotion's
+generic starter template — that confirms the tool boots, not what Reelright
+actually does. To see the real thing, render the tracked `input/vite-proof`
+fixture: a small, reproducible test app whose actual UI gets mounted inside
+Remotion and verified pixel-for-pixel deterministic across two renders and
+both bundlers:
+
+```bash
+npm ci --prefix input/vite-proof
+npm run proof:vite:verify    # renders out/vite-proof/dashboard-demo.mp4
+```
+
+`npm run proof:vite:studio` opens Studio on that fixture directly if you'd
+rather look around interactively than just render the file.
 
 Useful checks:
 
@@ -64,15 +84,6 @@ npm run build
 npm run build:rspack
 npm run check:clean-clone   # what CI runs on a fresh clone
 npm run app:list            # list configured adapters
-```
-
-The tracked `input/vite-proof` fixture is a small, reproducible test app used
-to keep the direct-import path verifiable in a clean clone and in CI:
-
-```bash
-npm ci --prefix input/vite-proof
-npm run proof:vite:studio
-npm run proof:vite:verify
 ```
 
 ## Features
