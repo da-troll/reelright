@@ -1,0 +1,34 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "baseUrl": "../..",
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2020", "DOM"],
+    "noEmit": true,
+    "paths": {
+      "#/*": ["input/next-playground/*"],
+      "next/font/google": [
+        "adapters/next-playground/shims/next-font-google.ts"
+      ],
+      "next/font/local": ["adapters/next-playground/shims/next-font-local.ts"],
+      "next/image": ["adapters/next-playground/shims/next-image.tsx"],
+      "next/link": ["adapters/next-playground/shims/next-link.tsx"],
+      "next/navigation": ["adapters/next-playground/shims/next-navigation.tsx"]
+    }
+  },
+  "include": [
+    "./**/*.ts",
+    "./**/*.tsx",
+    "../../src/ChatSequence/**/*.ts",
+    "../../src/ChatSequence/**/*.tsx",
+    "../../src/engine/**/*.ts",
+    "../../src/engine/**/*.tsx",
+    "../../src/widgets/**/*.ts",
+    "../../input/next-playground/ui/**/*.ts",
+    "../../input/next-playground/ui/**/*.tsx"
+  ],
+  "exclude": ["./remotion.config.ts"]
+}

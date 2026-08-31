@@ -1,0 +1,37 @@
+================================================================================
+                           REMOTION ASSETS FOLDER
+================================================================================
+
+This is the public assets folder for your Remotion project.
+
+WHAT GOES HERE:
+- Images (PNG, JPG, SVG, WebP)
+- Videos (MP4, WebM)
+- Audio files (MP3, WAV)
+- Fonts
+- Any other static assets used in your compositions
+
+HOW IT WORKS:
+- Create subfolders to organize your assets (e.g., "logos/", "backgrounds/")
+- These folders will appear in the "Assets" tab in Remotion Studio's left panel
+- Reference assets in code using: staticFile("folder-name/file.png")
+
+EXAMPLE FOLDER STRUCTURE:
+  public/
+  ├── logos/
+  │   ├── company-logo.svg
+  │   └── product-logo.png
+  ├── backgrounds/
+  │   ├── gradient-bg.png
+  │   └── pattern-bg.svg
+  ├── user-avatars/
+  │   └── avatar-1.png
+  └── SAVE_ASSETS_HERE.txt (this file)
+
+NOTE:
+- Asset files are NOT tracked in git (only this readme is tracked)
+- Each team member should add their own assets locally
+- Generated captures belong in public/generated/<app-id>/
+- For shared assets, consider using a cloud storage solution
+
+================================================================================

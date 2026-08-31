@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2020", "DOM"],
+    "noEmit": true
+  },
+  "include": [
+    "./**/*.ts",
+    "./**/*.tsx",
+    "../../input/vite-proof/src/demo/**/*.ts",
+    "../../input/vite-proof/src/demo/**/*.tsx"
+  ],
+  "exclude": ["./remotion.config.ts"]
+}

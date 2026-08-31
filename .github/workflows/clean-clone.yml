@@ -1,0 +1,66 @@
+name: Clean clone
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm ci --prefix input/vite-proof
+      - run: npm run check:clean-clone
+      - run: npm run test:adapter-runtime
+      - run: npm run test:capture-runtime
+      - run: npm run proof:vite:check
+
+  external-adapter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run app:fetch -- --app oss-dashboard
+      - run: npm run app:install -- --app oss-dashboard
+      - run: npm run app:check -- --app oss-dashboard
+      - run: npm run app:verify -- --app oss-dashboard
+
+  next-adapter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run app:fetch -- --app next-playground
+      - run: npm run app:install -- --app next-playground
+      - run: npm run test:next-preflight
+      - run: npm run app:check -- --app next-playground
+      - run: npx playwright install --with-deps chromium
+      - run: sudo apt-get update && sudo apt-get install --yes ffmpeg
+      - run: npm run app:capture:verify -- --app next-playground --flow layouts-navigation
+      - run: npm run app:capture:verify -- --app next-playground --flow layouts-video
+      - run: npm run app:verify -- --app next-playground
+      - name: Upload capture diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: next-adapter-capture-diagnostics
+          path: |
+            .remotion-app/next-playground/capture-*.log
+            .remotion-app/next-playground/capture-verification/
+            public/generated/next-playground/

@@ -1,0 +1,36 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2020", "DOM"],
+    "noEmit": true,
+    "paths": {
+      "@reduxjs/toolkit": [
+        "../../input/oss-dashboard/node_modules/@reduxjs/toolkit"
+      ],
+      "react-redux": ["../../input/oss-dashboard/node_modules/react-redux"],
+      "react-router-dom": [
+        "../../input/oss-dashboard/node_modules/react-router-dom"
+      ]
+    }
+  },
+  "include": [
+    "./**/*.ts",
+    "./**/*.tsx",
+    "../../src/engine/**/*.ts",
+    "../../src/engine/**/*.tsx",
+    "../../src/widgets/**/*.ts",
+    "../../input/oss-dashboard/src/**/*.ts",
+    "../../input/oss-dashboard/src/**/*.tsx",
+    "../../input/oss-dashboard/src/**/*.js",
+    "../../input/oss-dashboard/src/**/*.jsx"
+  ],
+  "exclude": [
+    "./remotion.config.ts",
+    "../../input/oss-dashboard/src/**/*.test.ts",
+    "../../input/oss-dashboard/src/**/*.test.tsx"
+  ]
+}

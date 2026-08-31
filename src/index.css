@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+/* Placeholder design system theme - see src/theme.ts. */
+@theme {
+  /* Brand Colors */
+  --color-brand-primary: #9773ff;
+  --color-brand-primary-dark: #2d0c69;
+  --color-brand-primary-light: #ece8ff;
+  --color-brand-secondary: #ff9573;
+  --color-brand-quinary: #ff9ed0;
+
+  /* Text Colors */
+  --color-text-default: #16141e;
+  --color-text-secondary: #706e78;
+  --color-text-disabled: #8b8892;
+  --color-text-link: #3f51b5;
+  --color-text-inverted: #ffffff;
+
+  /* Surface Colors */
+  --color-surface-main: #ffffff;
+  --color-surface-variant: #f2f0f7;
+  --color-surface-viewport: #fffcfb;
+  --color-surface-outline: #dddbe4;
+
+  /* Chart/Chip Colors */
+  --color-chart-purple: #8955fd;
+  --color-chart-pink: #ff9ed0;
+  --color-chart-green: #80e4a6;
+  --color-chart-orange: #F2B299;
+  --color-chart-blue: #2380c5;
+  --color-chart-teal: #0f6f69;
+
+  /* Status Colors */
+  --color-status-success: #e6f3ed;
+  --color-status-on-success: #10563a;
+  --color-status-error: #ffdcd9;
+  --color-status-on-error: #920d0d;
+
+  /* Typography */
+  --font-family-sans: "Inter", system-ui, sans-serif;
+  --font-family-serif: "Source Serif 4", Georgia, serif;
+
+  /* Layout */
+  --radius-card: 16px;
+  --radius-button: 8px;
+  --radius-small: 4px;
+}

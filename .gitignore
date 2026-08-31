@@ -1,0 +1,132 @@
+# ======================
+# Dependencies
+# ======================
+node_modules/
+.pnp.*
+.yarn/
+
+# ======================
+# Build & Output
+# ======================
+dist/
+build/
+out/
+*.mp4
+*.webm
+*.mov
+*.avi
+
+# ======================
+# Remotion
+# ======================
+# Rendered videos (keep source assets in src/ or public/)
+out/
+# Remotion cache
+.remotion/
+# Public assets (project-specific, not part of template)
+# Keep the folder and readme, ignore all other contents
+public/*
+!public/SAVE_ASSETS_HERE.txt
+
+# Cloned source applications are local inputs, not builder source.
+input/*
+!input/README.md
+# The Phase 1 app is a committed test fixture so its adapter remains verifiable
+# in clean clones. Other input applications remain local and ignored.
+!input/vite-proof/
+
+# Generated active-adapter state and capture outputs.
+.remotion-app/
+public/generated/
+
+# ======================
+# Environment & Secrets
+# ======================
+.env
+.env.local
+.env.*.local
+*.pem
+credentials.json
+
+# ======================
+# OS Files
+# ======================
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+
+# ======================
+# IDE & Editor
+# ======================
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.cursor/
+.codex/
+.gemini/
+.opencode/
+.agent/
+
+# Note: .agents/ is kept - contains shared skills (e.g., remotion-best-practices)
+
+# ======================
+# Project-Specific Instructions
+# ======================
+AGENT_INSTRUCTIONS.md
+
+# ======================
+# Logs & Debug
+# ======================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ======================
+# Testing & Coverage
+# ======================
+coverage/
+.nyc_output/
+
+# ======================
+# Personal Project Files
+# ======================
+# Scratch/draft files
+scratch/
+drafts/
+_old/
+_archive/
+_backup/
+
+# Compositions (project-specific, not shared)
+src/compositions/
+
+# Personal notes
+notes.md
+TODO.md
+personal/
+
+# Client-specific assets (use public/assets/ for template examples)
+client-assets/
+private/
+
+# ======================
+# Temporary Files
+# ======================
+tmp/
+temp/
+*.tmp
+*.temp
+.cache/
+
+# ======================
+# Package Manager Locks (optional - uncomment if you want to ignore)
+# ======================
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+.worktrees/
