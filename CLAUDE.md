@@ -35,6 +35,9 @@ changing the adapter runtime, capture subsystem, or compatibility gates.
   any provider/consumer context package must resolve consistently.
 - Keep shared bundler behavior plugin-free and compatible with both Webpack and
   Rspack. Quarantine bundler-specific behavior behind internal implementations.
+- Inherit the shared `swangle` Chromium OpenGL renderer. Only a demonstrated
+  adapter requirement may override it after `applyAdapterBundlerConfig()`; in
+  that case document the evidence and rerun both strict pixel gates.
 - Use `<Video>` from `@remotion/media` for generated captures.
 - Anchor overlay and camera geometry (highlights, cursors, callouts, camera
   keyframes) to the live DOM via `src/engine/anchors.tsx`; never hand-pick page

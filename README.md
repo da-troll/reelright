@@ -101,20 +101,23 @@ npm run app:list            # list configured adapters
 - **Portable adapter runtime** — module ownership, scoped CSS isolation, and
   bundler behavior are handled generically once, in `adapter-runtime/`, and
   reused by every adapter.
+- **Clone-stable Chromium rendering** — every adapter inherits the shared
+  `swangle` OpenGL renderer instead of letting Chrome select a host-dependent
+  raster backend.
 - **A Claude Code skill included** — `integrate-native-app` teaches an agent
   the whole workflow: inventory, rung selection, module ownership, CSS
   scoping, capture, and verification.
 
 ## Tech stack
 
-| Layer | Tech |
-|---|---|
-| Video | Remotion + React + TypeScript |
-| Bundler | Webpack and Rspack, kept portable per adapter |
-| Styling | Scoped-prefix compiled CSS (Tailwind v4-aware); plain CSS otherwise |
-| Native pre-capture | Playwright (frame-addressed, not wall-clock recording) |
-| Verification | `pixelmatch` pixel diffing, Node's built-in `assert` for tests |
-| Agent workflow | A Claude Code skill (`.agents/skills/integrate-native-app/`) |
+| Layer              | Tech                                                                |
+| ------------------ | ------------------------------------------------------------------- |
+| Video              | Remotion + React + TypeScript                                       |
+| Bundler            | Webpack and Rspack, kept portable per adapter                       |
+| Styling            | Scoped-prefix compiled CSS (Tailwind v4-aware); plain CSS otherwise |
+| Native pre-capture | Playwright (frame-addressed, not wall-clock recording)              |
+| Verification       | `pixelmatch` pixel diffing, Node's built-in `assert` for tests      |
+| Agent workflow     | A Claude Code skill (`.agents/skills/integrate-native-app/`)        |
 
 ## Repo layout
 
@@ -172,9 +175,29 @@ npm run app:verify -- --app <app-id>
 npm run app:studio -- --app <app-id>
 ```
 
+A public clone ships all four adapter configurations: `vite-proof`,
+`oss-dashboard`, `next-playground`, and `horizon-tailwind-react`. `vite-proof`
+includes its tracked fixture; the other three retain their pinned public source
+metadata and become runnable after `app:fetch` and `app:install`. The renderer
+hardening does not remove, hide, or opt any adapter out of `app:list`.
+
 `app:studio` writes `.remotion-app/active-adapter.json` and starts Studio
 with the selected entry point. Switching applications requires a Studio
 restart; loading two adapters into one bundle is out of scope.
+
+Every adapter's `remotion.config.ts` inherits the shared `swangle` Chromium
+OpenGL renderer from `applyAdapterBundlerConfig()`. This prevents Chrome from
+silently choosing different software raster paths on different clones or CI
+runners. It can change exact edge anti-aliasing pixels compared with renders
+made before this policy, so regenerate intentionally stored image baselines
+after updating.
+
+A different Remotion-supported OpenGL backend is an exceptional, per-adapter
+choice. Set it with `Config.setChromiumOpenGlRenderer()` only _after_
+`applyAdapterBundlerConfig()`, document why the native surface needs it, and
+rerun strict delayed-determinism and Webpack/Rspack verification. Do not change
+the shared default or add pixel tolerance merely to hide an unexplained raster
+difference.
 
 `oss-dashboard` targets Flatlogic's MIT-licensed React Dashboard at a pinned
 commit — a real external Redux + React Router app, imported directly:

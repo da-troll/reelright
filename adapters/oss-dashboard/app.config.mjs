@@ -48,17 +48,7 @@ export const appConfig = defineAppConfig({
       },
       "OssDashboard-Demo": {
         pixelTolerance: {
-          // STOPGAP, not a verified/understood rasterization difference:
-          // this surface has consistently failed Webpack/Rspack parity on
-          // CI runners only (never locally, never previously) at
-          // ~133 pixels differing, frame 59, threshold 0. Delayed-render
-          // determinism itself is clean (0 pixels differ). Root cause not
-          // yet found; candidate is a CI-only bundler output difference
-          // (minification/target resolution) in a chart or widget on this
-          // surface. Tolerance sized just above the observed diff as a
-          // temporary unblock. Revisit and tighten once the actual source
-          // of the bundler divergence is identified.
-          bundler: { threshold: 0.01, maxChangedPixels: 150 },
+          bundler: { threshold: 0, maxChangedPixels: 0 },
           determinism: { threshold: 0, maxChangedPixels: 0 },
         },
       },

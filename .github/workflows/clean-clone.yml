@@ -36,6 +36,13 @@ jobs:
       - run: npm run app:install -- --app oss-dashboard
       - run: npm run app:check -- --app oss-dashboard
       - run: npm run app:verify -- --app oss-dashboard
+      - name: Upload oss-dashboard render diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: oss-dashboard-render-diagnostics
+          path: out/adapters/oss-dashboard/
+          if-no-files-found: warn
 
   horizon-adapter:
     runs-on: ubuntu-latest

@@ -2,6 +2,10 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import postcss from "postcss";
+import {
+  applyAdapterBundlerConfig,
+  DEFAULT_ADAPTER_OPENGL_RENDERER,
+} from "../adapter-runtime/bundler.mjs";
 import { getOwnedModuleAliases } from "../adapter-runtime/module-ownership.mjs";
 import {
   hasAsyncExportedComponent,
@@ -15,6 +19,29 @@ import {
 import { viteProofConfig } from "../adapters/vite-proof/app.config.mjs";
 
 const aliases = getOwnedModuleAliases(viteProofConfig);
+
+let configuredOpenGlRenderer = null;
+const registeredBundlerOverrides = [];
+const adapterConfigHarness = {
+  overrideBundlerConfig: (override) =>
+    registeredBundlerOverrides.push(override),
+  overrideRspackConfig: () => {
+    throw new Error("Webpack test path must not configure Rspack");
+  },
+  overrideWebpackConfig: (override) =>
+    registeredBundlerOverrides.push(override),
+  setChromiumOpenGlRenderer: (renderer) => {
+    configuredOpenGlRenderer = renderer;
+  },
+};
+
+applyAdapterBundlerConfig({
+  Config: adapterConfigHarness,
+  config: viteProofConfig,
+});
+
+assert.equal(configuredOpenGlRenderer, DEFAULT_ADAPTER_OPENGL_RENDERER);
+assert.equal(registeredBundlerOverrides.length, 2);
 
 for (const requiredSpecifier of [
   "react$",

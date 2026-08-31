@@ -61,6 +61,10 @@ than forking them.
 - Drive intentional video motion from `useCurrentFrame()` and suppress scoped
   autonomous CSS or library motion.
 - Resolve shared modules to one absolute owner path for all importers.
+- Inherit the shared `swangle` Chromium OpenGL renderer. A proven adapter-local
+  exception must be set after `applyAdapterBundlerConfig()`, documented, and
+  reverified under both strict pixel gates; never change the shared default or
+  add tolerance to conceal unexplained raster drift.
 - Use scoped-prefix CSS by default. Shadow DOM is a last resort only when the
   app does not rely on Tailwind v4 or registered custom properties.
 - Never use a live iframe as a render source.
