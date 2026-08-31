@@ -14,7 +14,6 @@ import {
   getRepresentativeFrames,
   parseCompositionListing,
 } from "../adapter-runtime/verify.mjs";
-import { ossDashboardConfig } from "../adapters/oss-dashboard/app.config.mjs";
 import { viteProofConfig } from "../adapters/vite-proof/app.config.mjs";
 
 const aliases = getOwnedModuleAliases(viteProofConfig);
@@ -40,7 +39,11 @@ const defaultRendererState = applyConfigWithHarness(viteProofConfig);
 assert.equal(defaultRendererState.openGlRenderer, null);
 assert.equal(defaultRendererState.overrides.length, 2);
 
-const pinnedRendererState = applyConfigWithHarness(ossDashboardConfig);
+const pinnedRendererConfig = defineAppConfig({
+  ...viteProofConfig,
+  rendering: { chromiumOpenGlRenderer: "swangle" },
+});
+const pinnedRendererState = applyConfigWithHarness(pinnedRendererConfig);
 assert.equal(pinnedRendererState.openGlRenderer, "swangle");
 assert.equal(pinnedRendererState.overrides.length, 2);
 
