@@ -84,4 +84,5 @@ jobs:
           path: |
             .remotion-app/next-playground/capture-*.log
             .remotion-app/next-playground/capture-verification/
+            out/adapters/next-playground/
             public/generated/next-playground/

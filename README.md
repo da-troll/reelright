@@ -101,9 +101,9 @@ npm run app:list            # list configured adapters
 - **Portable adapter runtime** — module ownership, scoped CSS isolation, and
   bundler behavior are handled generically once, in `adapter-runtime/`, and
   reused by every adapter.
-- **Clone-stable Chromium rendering** — every adapter inherits the shared
-  `swangle` OpenGL renderer instead of letting Chrome select a host-dependent
-  raster backend.
+- **Evidence-based Chromium rendering** — an adapter can pin a validated OpenGL
+  backend when its native surface requires one, without changing rasterization
+  for every other adapter.
 - **A Claude Code skill included** — `integrate-native-app` teaches an agent
   the whole workflow: inventory, rung selection, module ownership, CSS
   scoping, capture, and verification.
@@ -185,19 +185,19 @@ hardening does not remove, hide, or opt any adapter out of `app:list`.
 with the selected entry point. Switching applications requires a Studio
 restart; loading two adapters into one bundle is out of scope.
 
-Every adapter's `remotion.config.ts` inherits the shared `swangle` Chromium
-OpenGL renderer from `applyAdapterBundlerConfig()`. This prevents Chrome from
-silently choosing different software raster paths on different clones or CI
-runners. It can change exact edge anti-aliasing pixels compared with renders
-made before this policy, so regenerate intentionally stored image baselines
-after updating.
+The runtime honors an optional, validated
+`rendering.chromiumOpenGlRenderer` setting in `app.config.mjs`.
+`oss-dashboard` pins `swangle` because its fractionally transformed edges were
+proven to alternate between two one-channel raster variants when Chrome chose
+implicitly. The other adapters retain Remotion's default: forcing the same
+backend globally can destabilize an unrelated surface. Existing clones will
+therefore see exact anti-aliasing changes only for OSS Dashboard after pulling;
+regenerate any intentionally stored OSS Dashboard image baselines.
 
-A different Remotion-supported OpenGL backend is an exceptional, per-adapter
-choice. Set it with `Config.setChromiumOpenGlRenderer()` only _after_
-`applyAdapterBundlerConfig()`, document why the native surface needs it, and
-rerun strict delayed-determinism and Webpack/Rspack verification. Do not change
-the shared default or add pixel tolerance merely to hide an unexplained raster
-difference.
+Selecting a Remotion-supported OpenGL backend remains an exceptional,
+per-adapter choice. Record the evidence in `app.config.mjs` and rerun strict
+delayed-determinism and Webpack/Rspack verification. Do not add pixel tolerance
+merely to hide unexplained raster drift.
 
 `oss-dashboard` targets Flatlogic's MIT-licensed React Dashboard at a pinned
 commit — a real external Redux + React Router app, imported directly:

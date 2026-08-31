@@ -4,6 +4,14 @@ import process from "node:process";
 import { pathToFileURL } from "node:url";
 
 const APP_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const CHROMIUM_OPENGL_RENDERERS = new Set([
+  "angle",
+  "angle-egl",
+  "egl",
+  "swangle",
+  "swiftshader",
+  "vulkan",
+]);
 
 const requiredString = (value, label) => {
   if (typeof value !== "string" || value.length === 0) {
@@ -35,6 +43,25 @@ export const defineAppConfig = (config) => {
     config.moduleOwnership.length === 0
   ) {
     throw new Error(`Adapter ${config.id} must declare moduleOwnership`);
+  }
+
+  if (
+    config.rendering !== undefined &&
+    (config.rendering === null ||
+      typeof config.rendering !== "object" ||
+      Array.isArray(config.rendering))
+  ) {
+    throw new Error(`Adapter ${config.id} has an invalid rendering config`);
+  }
+
+  const openGlRenderer = config.rendering?.chromiumOpenGlRenderer;
+  if (
+    openGlRenderer !== undefined &&
+    !CHROMIUM_OPENGL_RENDERERS.has(openGlRenderer)
+  ) {
+    throw new Error(
+      `Adapter ${config.id} has an invalid Chromium OpenGL renderer: ${openGlRenderer}`,
+    );
   }
 
   return Object.freeze(config);

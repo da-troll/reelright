@@ -20,6 +20,11 @@ export const appConfig = defineAppConfig({
     width: 1440,
     height: 1000,
   },
+  rendering: {
+    // Fractionally transformed edges produced two repeatable one-channel
+    // raster variants when Chrome selected its backend implicitly.
+    chromiumOpenGlRenderer: "swangle",
+  },
   css: {
     entries: ["node_modules/bootstrap/dist/css/bootstrap.min.css"],
   },

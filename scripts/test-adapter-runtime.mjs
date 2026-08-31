@@ -2,10 +2,8 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import postcss from "postcss";
-import {
-  applyAdapterBundlerConfig,
-  DEFAULT_ADAPTER_OPENGL_RENDERER,
-} from "../adapter-runtime/bundler.mjs";
+import { applyAdapterBundlerConfig } from "../adapter-runtime/bundler.mjs";
+import { defineAppConfig } from "../adapter-runtime/config.mjs";
 import { getOwnedModuleAliases } from "../adapter-runtime/module-ownership.mjs";
 import {
   hasAsyncExportedComponent,
@@ -16,32 +14,44 @@ import {
   getRepresentativeFrames,
   parseCompositionListing,
 } from "../adapter-runtime/verify.mjs";
+import { ossDashboardConfig } from "../adapters/oss-dashboard/app.config.mjs";
 import { viteProofConfig } from "../adapters/vite-proof/app.config.mjs";
 
 const aliases = getOwnedModuleAliases(viteProofConfig);
 
-let configuredOpenGlRenderer = null;
-const registeredBundlerOverrides = [];
-const adapterConfigHarness = {
-  overrideBundlerConfig: (override) =>
-    registeredBundlerOverrides.push(override),
-  overrideRspackConfig: () => {
-    throw new Error("Webpack test path must not configure Rspack");
-  },
-  overrideWebpackConfig: (override) =>
-    registeredBundlerOverrides.push(override),
-  setChromiumOpenGlRenderer: (renderer) => {
-    configuredOpenGlRenderer = renderer;
-  },
+const applyConfigWithHarness = (config) => {
+  const state = { openGlRenderer: null, overrides: [] };
+  const Config = {
+    overrideBundlerConfig: (override) => state.overrides.push(override),
+    overrideRspackConfig: () => {
+      throw new Error("Webpack test path must not configure Rspack");
+    },
+    overrideWebpackConfig: (override) => state.overrides.push(override),
+    setChromiumOpenGlRenderer: (renderer) => {
+      state.openGlRenderer = renderer;
+    },
+  };
+
+  applyAdapterBundlerConfig({ Config, config });
+  return state;
 };
 
-applyAdapterBundlerConfig({
-  Config: adapterConfigHarness,
-  config: viteProofConfig,
-});
+const defaultRendererState = applyConfigWithHarness(viteProofConfig);
+assert.equal(defaultRendererState.openGlRenderer, null);
+assert.equal(defaultRendererState.overrides.length, 2);
 
-assert.equal(configuredOpenGlRenderer, DEFAULT_ADAPTER_OPENGL_RENDERER);
-assert.equal(registeredBundlerOverrides.length, 2);
+const pinnedRendererState = applyConfigWithHarness(ossDashboardConfig);
+assert.equal(pinnedRendererState.openGlRenderer, "swangle");
+assert.equal(pinnedRendererState.overrides.length, 2);
+
+assert.throws(
+  () =>
+    defineAppConfig({
+      ...viteProofConfig,
+      rendering: { chromiumOpenGlRenderer: "not-a-renderer" },
+    }),
+  /invalid Chromium OpenGL renderer/,
+);
 
 for (const requiredSpecifier of [
   "react$",
