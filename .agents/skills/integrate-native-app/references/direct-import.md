@@ -36,6 +36,19 @@ React is app-owned, verify it against Remotion's actual peer dependency range;
 if a different module is app-owned, verify it against the builder's declared
 range where one exists.
 
+A package with no `exports` field at all (older or less strict packages)
+gives the runtime nothing to derive subpaths from; declare each subpath the
+adapter actually imports explicitly via `includeSubpaths`/`requiredSubpaths`
+rather than skipping ownership for that module.
+
+Module ownership only covers imports of installed packages. An app that
+resolves its own internal files as bare specifiers rooted at its own source
+directory (Create React App's implicit `src/`-relative resolution, or an
+explicit bundler `baseUrl`) needs a different fix: add that directory to the
+bundler's module resolution search path (e.g. Webpack/Rspack's
+`resolve.modules`) as an adapter-local override, the same way Node already
+searches `node_modules` — not one alias per bare import across the app.
+
 ## 3. Build the adapter environment
 
 - Put adapter providers in `providers.tsx`. Create mutable stores once with a
@@ -72,6 +85,15 @@ For Tailwind v4, compile with the input application's own PostCSS plugin and add
 adapter sources to Tailwind scanning before selector scoping. Do not introduce a
 second Tailwind runtime. Use Shadow DOM only after confirming the app does not
 depend on Tailwind v4 registered properties or root variables.
+
+For a CSS toolchain this repo's compiler has no processor for (Tailwind v3 and
+earlier have no equivalent single-file "expand every utility" build the way
+v4's PostCSS plugin does), let the app's own build produce and purge its real
+CSS, then point `css.entries` at that already-compiled output and scope it
+through the plain processor — the same technique already used for a
+Bootstrap-based adapter's prebuilt CSS. If the build tool content-hashes its
+output filename, wrap the build command in a small script that copies the
+result to a stable name `css.entries` can reference.
 
 ## 5. Preserve physical layout
 

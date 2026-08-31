@@ -38,6 +38,7 @@ Configure additional frames when a meaningful state is otherwise missed.
 | Same-machine render pixels differ slightly for a justified rasterization reason                            | Surface tolerance candidate       | Keep strict zero as the default. Add the narrowest per-surface, per-gate threshold and changed-pixel limit with a recorded reason. Never weaken a global default.                                  |
 | Assets generated on another OS differ                                                                      | Environment mismatch              | Regenerate in the target environment. Cross-OS pixel equality is not part of the capture contract.                                                                                                 |
 | A highlight, cursor, or callout points at the wrong native element                                         | Hardcoded overlay geometry        | Replace estimated coordinates with `AnchorSurface`/`useAnchorRect` DOM anchors, ensure the anchored frames are in the surface's verification `frames`, and let missing anchors cancel the render. |
+| Delayed renders differ only inside a chart, carousel, or other library-driven widget                       | Script-driven mount animation      | The scoped-CSS suppressor only stops CSS animations/transitions. A library that animates via its own JS (many chart libraries) needs that library's own animation-disable option; find it before reaching for a shim. |
 
 ## Completion record
 

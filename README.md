@@ -136,7 +136,8 @@ src/
 adapters/
 ├── vite-proof/                     # Tracked fixture: direct-import proof (Vite/React)
 ├── oss-dashboard/                  # Flatlogic React Dashboard (MIT, pinned commit)
-└── next-playground/                # Vercel App Router Playground (MIT, pinned commit)
+├── next-playground/                # Vercel App Router Playground (MIT, pinned commit)
+└── horizon-tailwind-react/         # Horizon UI dashboard (MIT, pinned commit)
 adapter-runtime/                    # Generic Node-side runtime every adapter shares
 ├── config.mjs                       # app.config.mjs loading/validation
 ├── module-ownership.mjs             # Absolute, export-derived shared-module aliases
@@ -214,6 +215,30 @@ wall-clock delay and compares the manifest plus decoded pixel/frame hashes;
 container metadata is deliberately not a reproducibility signal. Generated
 capture assets are environment-local — regenerate them on whichever machine
 renders, rather than assuming pixel equality across operating systems.
+
+`horizon-tailwind-react` targets Horizon UI's MIT-licensed Tailwind React
+admin dashboard at a pinned commit — a Create React App (not Vite or
+Next.js) app using Tailwind v3, Chakra UI, and ApexCharts, none of which the
+adapters above touch:
+
+```bash
+npm run app:fetch -- --app horizon-tailwind-react
+npm run app:install -- --app horizon-tailwind-react
+npm run app:check -- --app horizon-tailwind-react
+npm run app:verify -- --app horizon-tailwind-react
+```
+
+It demonstrates handling a few real, generalizable integration problems:
+Tailwind v3 has no single-file "all utilities" build this repo's CSS compiler
+can expand directly, so the adapter lets the app's own `npm run build`
+produce and purge its CSS, then scopes that finished stylesheet (see
+`oss-dashboard`'s prebuilt-CSS approach for the same idea); Create React
+App's implicit `src/`-relative import resolution needs an adapter-local
+`resolve.modules` bundler override rather than one alias per bare import;
+and ApexCharts' animated initial draw-in is disabled through the chart
+library's own animation option, not a CSS override — a mount animation
+driven by the library's own JS (as most chart libraries' are) can't be
+stopped by the scoped-CSS suppressor, which only reaches CSS-driven motion.
 
 Generic verification discovers the registered catalog from Remotion itself:
 every Still is checked at frame 0, every Composition at first/middle/final

@@ -37,6 +37,20 @@ jobs:
       - run: npm run app:check -- --app oss-dashboard
       - run: npm run app:verify -- --app oss-dashboard
 
+  horizon-adapter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run app:fetch -- --app horizon-tailwind-react
+      - run: npm run app:install -- --app horizon-tailwind-react
+      - run: npm run app:check -- --app horizon-tailwind-react
+      - run: npm run app:verify -- --app horizon-tailwind-react
+
   next-adapter:
     runs-on: ubuntu-latest
     steps:

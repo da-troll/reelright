@@ -371,3 +371,46 @@ by pixel-diffing against a known-good baseline render.
 This phase does not change the Phase 0–5 invariants; it adds presentation
 tooling used once a surface is already admitted through the compatibility
 ladder described above.
+
+### Phase 7 — a fifth proof adapter, built by a fresh agent with no prior context
+
+Not part of the original plan either; added as an end-to-end validation
+exercise. A general-purpose agent, given only this repository's own public
+docs and skill (no memory of Phases 0–6), was asked to integrate a real,
+previously untouched app: Horizon UI's MIT-licensed Tailwind React admin
+dashboard (Create React App, Tailwind v3, Chakra UI, ApexCharts, React
+Router — a stack combination none of the first four adapters exercise). It
+produced `adapters/horizon-tailwind-react/`, admitted at direct-import rung
+1, independently re-verified afterward (fresh `app:fetch`, `app:install`,
+`app:check`, `app:verify`, and a rendered frame inspected by eye) rather than
+trusted on its own report.
+
+It correctly solved four real problems using only the skill's existing
+rules: a CSS tooling version mismatch (Tailwind v3 has no single-file
+"expand all utilities" build this repo's compiler can process directly, so
+the adapter lets the app's own build produce and purge its CSS, then scopes
+that output — the same idea `oss-dashboard` already uses for prebuilt
+Bootstrap CSS); an exact-version React pin narrower than the host's own
+range, resolved by flipping module ownership to the app, the same direction
+`next-playground` already uses for the same reason; two components reading
+`new Date()` directly, fixed with environment-mocking shims per the
+"mock the environment, not the component" rule; and a real determinism-gate
+catch — ApexCharts' animated initial draw-in is JS-driven, not CSS, so the
+scoped-CSS motion suppressor could not reach it, and the fix (disable that
+one animation through the chart library's own option) is now a second,
+independent confirmation of the same underlying category: a native
+component's own script-driven mount animation needs the library's own
+disable mechanism, not a CSS rule.
+
+Two problems were genuinely new: a package with no `exports` map at all
+(`react-icons`) needed every consumed subpath declared explicitly rather
+than derived, and Create React App's implicit `src/`-relative import
+resolution needed an adapter-local bundler `resolve.modules` addition
+instead of one alias per bare import — both folded into
+[direct-import.md](../.agents/skills/integrate-native-app/references/direct-import.md).
+The one adapter-authored lint violation (an untyped bundler override inline
+in a `.ts` file) was caught by running `npm run lint` against this
+repository's real committed state before review, not by trusting the
+agent's own report of success — the same lesson Phase 6's own retrospective
+already recorded about verifying against a real baseline rather than a
+self-report.

@@ -1,0 +1,33 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2020", "DOM"],
+    "noEmit": true,
+    "baseUrl": "../../input/horizon-tailwind-react/src",
+    // NOTE: "paths" substitutions are resolved relative to "baseUrl" (above),
+    // not relative to this file -- so these targets are one level up from
+    // baseUrl (input/horizon-tailwind-react/src) to reach its node_modules.
+    "paths": {
+      "react-router-dom": ["../node_modules/react-router-dom"],
+      "react-icons/*": ["../node_modules/react-icons/*"],
+      "react-calendar": ["../node_modules/react-calendar"],
+      "*": ["*"]
+    }
+  },
+  "include": [
+    "./**/*.ts",
+    "./**/*.tsx",
+    "../../src/engine/**/*.ts",
+    "../../src/engine/**/*.tsx",
+    "../../input/horizon-tailwind-react/src/**/*.js",
+    "../../input/horizon-tailwind-react/src/**/*.jsx"
+  ],
+  "exclude": [
+    "./remotion.config.ts",
+    "../../input/horizon-tailwind-react/src/**/*.test.js"
+  ]
+}
