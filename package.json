@@ -6,7 +6,7 @@
     "type": "git",
     "url": "git+https://github.com/da-troll/reelright.git"
   },
-  "license": "UNLICENSED",
+  "license": "MIT",
   "private": true,
   "dependencies": {
     "@remotion/cli": "4.0.517",

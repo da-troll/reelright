@@ -1,5 +1,10 @@
 # Reelright
 
+[![CI](https://github.com/da-troll/reelright/actions/workflows/clean-clone.yml/badge.svg)](https://github.com/da-troll/reelright/actions/workflows/clean-clone.yml)
+![license: MIT](https://img.shields.io/badge/license-MIT-brightgreen)
+![remotion license: proprietary](https://img.shields.io/badge/remotion%20license-proprietary-critical)
+![node](https://img.shields.io/badge/node-22.x-brightgreen)
+
 Reelright turns application prototypes cloned into `input/` into deterministic
 Remotion demos and scripted product-tour videos. The cloned application stays
 the source of truth for its own product UI; Reelright owns time, motion,
@@ -261,3 +266,18 @@ npx remotion render HelloWorld out/hello-world.mp4
 See [`docs/native-app-adapter-plan.md`](docs/native-app-adapter-plan.md) for
 the full compatibility ladder, adapter framework, capture contract, and the
 project's development history.
+
+## License
+
+Reelright's own code is [MIT licensed](LICENSE).
+
+**Remotion is not.** This project is built on [Remotion](https://remotion.dev)
+and the `@remotion/*` packages, which are separately licensed under
+[Remotion's own license](https://www.remotion.dev/docs/license) — free for
+individuals, non-profits, and for-profit organizations with three or fewer
+people; a paid [Company License](https://www.remotion.pro/license) is
+required once four or more people (aggregated across any collaborating
+parties) operate it. Reelright's MIT license covers only the code in this
+repository — it does not, and cannot, extend any rights to Remotion itself.
+Using Reelright means using Remotion; each user or organization is
+independently responsible for complying with Remotion's own license terms.
