@@ -149,8 +149,6 @@ adapter-runtime/                    # Generic Node-side runtime every adapter sh
 .agents/skills/
 ├── integrate-native-app/           # The core skill for this repo
 └── remotion-best-practices/        # General Remotion authoring rules
-docs/
-└── native-app-adapter-plan.md      # Full architecture history and rationale
 scripts/                            # Fixture and adapter-runtime test/CI scripts
 ```
 
@@ -299,9 +297,6 @@ the project instructions in `CLAUDE.md` and the `integrate-native-app` skill.
 npx remotion render HelloWorld out/hello-world.mp4
 ```
 
-See [`docs/native-app-adapter-plan.md`](docs/native-app-adapter-plan.md) for
-the full compatibility ladder, adapter framework, capture contract, and the
-project's development history.
 
 ## License
 

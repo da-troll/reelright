@@ -21,8 +21,10 @@ Import and mount the application's real components when they can be made
 render-safe. Do not silently replace product UI with a lookalike. If direct
 integration cannot preserve native behavior and deterministic rendering, use a
 native application capture and document why the compatibility rung changed.
-Read `docs/native-app-adapter-plan.md` before changing the adapter runtime,
-capture subsystem, or compatibility gates.
+This project's extended architecture rationale is kept in private,
+internal notes not included in this distribution. Proceed carefully and
+favor the smallest change that satisfies the invariants above when
+changing the adapter runtime, capture subsystem, or compatibility gates.
 
 ## Render invariants
 

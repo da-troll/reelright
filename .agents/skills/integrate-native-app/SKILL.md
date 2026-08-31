@@ -19,10 +19,11 @@ lookalike.
 - Preserve the tracked fallback registry so a clean clone builds with no active
   input application.
 
-Read the [architecture plan](../../../docs/native-app-adapter-plan.md) before
+This project's extended architecture rationale is kept in private,
+internal notes not included in this distribution. Proceed carefully before
 changing `adapter-runtime/`, the CSS compiler, bundler infrastructure, or the
-capture contract. Ordinary app adapters should use those facilities rather than
-forking them.
+capture contract. Ordinary app adapters should use those facilities rather
+than forking them.
 
 ## Workflow
 
